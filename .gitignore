@@ -26,3 +26,6 @@ package-lock.json
 
 # backend
 env/
+__pycache__/
+migrations/
+db.sqlite3
