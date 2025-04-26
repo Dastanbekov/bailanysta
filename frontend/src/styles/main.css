@@ -1,0 +1,92 @@
+/* Сброс стилей */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+  }
+  
+  /* Основные стили для приложения */
+  body {
+	font-family: Arial, sans-serif;
+	background-color: #f4f4f4;
+	color: #333;
+  }
+  
+  .app {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+  }
+  
+  .header {
+	background-color: #4a90e2;
+	color: #fff;
+	padding: 1rem;
+	text-align: center;
+  }
+  
+  .header nav button {
+	margin: 0 0.5rem;
+	padding: 0.5rem 1rem;
+	border: none;
+	background-color: #fff;
+	color: #4a90e2;
+	cursor: pointer;
+	border-radius: 4px;
+  }
+  
+  .header nav button:hover {
+	background-color: #e0e0e0;
+  }
+  
+  .content {
+	flex: 1;
+	display: flex;
+  }
+  
+  .sidebar {
+	background-color: #fff;
+	width: 200px;
+	padding: 1rem;
+	border-right: 1px solid #ddd;
+  }
+  
+  .sidebar ul {
+	list-style: none;
+  }
+  
+  .sidebar li {
+	margin-bottom: 1rem;
+	cursor: pointer;
+	color: #4a90e2;
+  }
+  
+  .sidebar li:hover {
+	text-decoration: underline;
+  }
+  
+  .main-content {
+	flex: 1;
+	padding: 1rem;
+  }
+  
+  .post {
+	background-color: #fff;
+	padding: 1rem;
+	margin-bottom: 1rem;
+	border-radius: 6px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .post-header {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 0.5rem;
+  }
+  
+  .footer {
+	text-align: center;
+	background-color: #ddd;
+	padding: 1rem;
+  }
+  
