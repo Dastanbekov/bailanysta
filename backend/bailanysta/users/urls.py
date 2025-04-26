@@ -1,12 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ProfileViewSet, PostViewSet, CommentViewSet
+from . import views
 
-router = DefaultRouter()
-router.register(r'profiles', ProfileViewSet)
-router.register(r'posts', PostViewSet)
-router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
-    path('users/', include(router.urls)),
+    # path('users/', include(router.urls)),
+	path('reg/', views.CreateUserView.as_view(), name = 'user-create'),
+    path('posts/', views.PostListCreate.as_view(), name ='post-list-create'),
+	path('post-delete', views.PostDelete.as_view(), name = 'delete-post'),
+	path('post/<int:pk>', views.PostRetrieve.as_view(), name = 'post-retr'),
 ]

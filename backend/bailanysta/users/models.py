@@ -7,7 +7,7 @@ class Profile(models.Model):
 	# profile_picture = models.ImageField(upload_to='profile_pictures/', default='default.jpg')
 	bio = models.TextField(blank=True)
 	short_bio = models.CharField(max_length=50, blank=True)
-	followers = models.ManyToManyField('self', symmetrical=False, related_name='following', blank=True)
+	# followers = models.ManyToManyField('self', symmetrical=False, related_name='following', blank=True)
 
 	def __str__(self):
 		return f"{self.user.username} Profile"

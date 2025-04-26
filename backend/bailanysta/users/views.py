@@ -1,31 +1,44 @@
 from django.shortcuts import render
 
 # Create your views here.
-from rest_framework import viewsets, permissions
 from .models import Profile, Post, Comment
-from .serializers import ProfileSerializer, PostSerializer, CommentSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .serializers import PostSerializer, UserSerializer
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated,AllowAny
 
-class ProfileViewSet(viewsets.ModelViewSet):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+from django.contrib.auth.models import User
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+class CreateUserView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
-class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all().order_by('-created_at')
+class PostListCreate(generics.ListCreateAPIView):
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user
+        return Post.objects.filter(user = user)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+        else:
+            print(serializer.errors)
 
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all().order_by('-created_at')
-    serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+class PostDelete(generics.DestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def get_queryset(self):
+        user = self.request.user
+        return Post.objects.filter(user=user)
+    
+class PostRetrieve(generics.RetrieveAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Post.objects.filter(user=user)

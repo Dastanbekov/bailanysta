@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-c3--vzgi(*va1q5z5%9o*vvhz#@3n1t@n71o)l-5mpi0_i=rge
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 	'rest_framework',
 	'rest_framework_simplejwt',
+	"corsheaders",
     'users',
 ]
 
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	"corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = 'bailanysta.urls'
@@ -134,3 +136,6 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWS_CREDENTIALS = True
