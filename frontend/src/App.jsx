@@ -1,40 +1,63 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Sidebar from './components/Sidebar'
 import Home from './pages/Home'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
+import Register from './pages/Register'
+import Login from './pages/Login'
+import ProtectedRoute from './components/ProtectedRoute'
+import NotFound from './pages/NotFound'
 
-function App() {
-  // Пример простой навигации
-  const [page, setPage] = useState('home')
+function Logout() {
+  localStorage.clear();
+  return <Navigate to="/login" replace />;
+}
 
-  const renderPage = () => {
-    switch(page) {
-      case 'home':
-        return <Home />
-      case 'profile':
-        return <Profile />
-      case 'settings':
-        return <Settings />
-      default:
-        return <Home />
-    }
-  }
-
+function ProtectedLayout() {
   return (
     <div className="app">
-      <Header onNavChange={setPage} />
+      <Header />
       <div className="content">
-        <Sidebar onNavChange={setPage} />
+        <Sidebar />
         <main className="main-content">
-          {renderPage()}
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="logout" element={<Logout />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </main>
       </div>
       <Footer />
     </div>
-  )
+  );
 }
 
-export default App
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Защищённая зона */}
+        <Route 
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <ProtectedLayout />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Открытые страницы */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
