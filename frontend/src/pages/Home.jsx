@@ -88,9 +88,9 @@ function Home() {
       </div>
 
       <div className="posts-container">
-        <h2>Ваши посты</h2>
+        <h2>Публикации</h2>
         {posts.length === 0 ? (
-          <p className="no-posts">У вас пока нет постов. Создайте новый пост выше!</p>
+          <p className="no-posts">Пока нет публикаций. Создайте новый пост выше!</p>
         ) : (
           posts.map(post => (
             <Post 
