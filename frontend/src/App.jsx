@@ -2,17 +2,20 @@ import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Footer from './components/Footer'
 import Sidebar from './components/Sidebar'
+import Header from './components/Header'
 import Home from './pages/Home'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import ProtectedRoute from './components/ProtectedRoute'
-import Header from './components/Header'
+import PublicRoute from './components/PublicRoute'
 import NotFound from './pages/NotFound'
+import { AuthProvider, useAuth } from './context/AuthContext'
 
 function Logout() {
-  localStorage.clear();
+  const { logout } = useAuth();
+  logout();
   return <Navigate to="/login" replace />;
 }
 
@@ -39,24 +42,34 @@ function ProtectedLayout() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Защищённая зона */}
-        <Route 
-          path="/*"
-          element={
-            <ProtectedRoute>
-              <ProtectedLayout />
-            </ProtectedRoute>
-          }
-        />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Защищённая зона */}
+          <Route 
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <ProtectedLayout />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Открытые страницы */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+          {/* Открытые страницы - перенаправляют авторизованных пользователей на главную */}
+          <Route path="/login" element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } />
+          <Route path="/register" element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          } />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
