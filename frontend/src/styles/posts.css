@@ -1,0 +1,155 @@
+.home-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.create-post-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.create-post-container h2 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 20px;
+}
+
+.post-textarea {
+  width: 100%;
+  min-height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 16px;
+  resize: vertical;
+  margin-bottom: 15px;
+  font-family: inherit;
+}
+
+.post-textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.posts-container {
+  margin-top: 30px;
+}
+
+.posts-container h2 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 20px;
+}
+
+.no-posts {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: #777;
+  font-style: italic;
+}
+
+.post {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.post-author strong {
+  color: #333;
+  font-size: 16px;
+}
+
+.post-date {
+  color: #777;
+  font-size: 14px;
+}
+
+.post-content {
+  margin-bottom: 15px;
+  line-height: 1.5;
+  white-space: pre-line;
+  color: #333;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.post-likes {
+  color: #777;
+  font-size: 14px;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.delete-btn, .confirm-yes, .confirm-no {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.delete-btn {
+  color: #e74c3c;
+}
+
+.delete-btn:hover {
+  background-color: #fef2f2;
+}
+
+.confirm-delete {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.confirm-delete span {
+  color: #e74c3c;
+  font-size: 14px;
+}
+
+.confirm-yes {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.confirm-no {
+  background-color: #eee;
+  color: #333;
+}
+
+.confirm-yes:hover {
+  background-color: #c0392b;
+}
+
+.confirm-no:hover {
+  background-color: #ddd;
+} 

@@ -26,7 +26,11 @@ class PostListCreate(generics.ListCreateAPIView):
     
     def get_queryset(self):
         user = self.request.user
-        return Post.objects.filter(user = user)
+        # Check if the query parameter 'all_posts' is set to 'true'
+        if self.request.query_params.get('all_posts') == 'true':
+            return Post.objects.all()  # Fetch posts from all users
+        else:
+            return Post.objects.filter(user=user)  
 
     def perform_create(self, serializer):
         if serializer.is_valid():

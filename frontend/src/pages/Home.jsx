@@ -1,18 +1,107 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import Post from '../components/Post'
+import api from '../api'
+import { useAuth } from '../context/AuthContext'
 
 function Home() {
-  // Пример списка постов (можно заменить динамической загрузкой)
-  const posts = [
-    { id: 1, author: 'User1', content: 'Привет, мир!', date: '2025-04-26' },
-    { id: 2, author: 'User2', content: 'Вау, отличная соцсеть!', date: '2025-04-25' }
-  ]
-  
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [newPostContent, setNewPostContent] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const { user } = useAuth()
+
+  useEffect(() => {
+    fetchPosts()
+  }, [])
+
+  const fetchPosts = async () => {
+    try {
+      setLoading(true)
+      const response = await api.get('/api/posts/?all_posts=true')
+      setPosts(response.data)
+      setLoading(false)
+    } catch (err) {
+      console.error('Error fetching posts:', err)
+      setError('Не удалось загрузить посты')
+      setLoading(false)
+    }
+  }
+
+  const handleCreatePost = async (e) => {
+    e.preventDefault()
+    
+    if (!newPostContent.trim()) return
+    
+    try {
+      setSubmitting(true)
+      const response = await api.post('/api/posts/', {
+        content: newPostContent
+      })
+      
+      // Add the new post to the beginning of the posts array
+      setPosts([response.data, ...posts])
+      setNewPostContent('')
+      setSubmitting(false)
+    } catch (err) {
+      console.error('Error creating post:', err)
+      setError('Не удалось создать пост')
+      setSubmitting(false)
+    }
+  }
+
+  const handleDeletePost = async (postId) => {
+    try {
+      await api.delete(`/api/post-delete/${postId}`)
+      setPosts(posts.filter(post => post.id !== postId))
+    } catch (err) {
+      console.error('Error deleting post:', err)
+      setError('Не удалось удалить пост')
+    }
+  }
+
+  if (loading) {
+    return <div className="loading-container">Загрузка постов</div>
+  }
+
   return (
     <div className="home-page">
-      {posts.map(post => (
-        <Post key={post.id} {...post} />
-      ))}
+      <div className="create-post-container">
+        <h2>Создать пост</h2>
+        {error && <div className="error-message">{error}</div>}
+        <form onSubmit={handleCreatePost}>
+          <textarea
+            className="post-textarea"
+            placeholder="Что у вас нового?"
+            value={newPostContent}
+            onChange={(e) => setNewPostContent(e.target.value)}
+            disabled={submitting}
+          />
+          <button 
+            type="submit" 
+            className="auth-button"
+            disabled={submitting || !newPostContent.trim()}
+          >
+            {submitting ? 'Отправка...' : 'Опубликовать'}
+          </button>
+        </form>
+      </div>
+
+      <div className="posts-container">
+        <h2>Ваши посты</h2>
+        {posts.length === 0 ? (
+          <p className="no-posts">У вас пока нет постов. Создайте новый пост выше!</p>
+        ) : (
+          posts.map(post => (
+            <Post 
+              key={post.id} 
+              post={post} 
+              onDelete={handleDeletePost} 
+              currentUser={user}
+            />
+          ))
+        )}
+      </div>
     </div>
   )
 }
