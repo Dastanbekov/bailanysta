@@ -1,13 +1,15 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-function Header({ onNavChange }) {
+function Header() {
   return (
     <header className="header">
       <h1>Моя Соцсеть</h1>
       <nav>
-        <button onClick={() => onNavChange('home')}>Главная</button>
-        <button onClick={() => onNavChange('profile')}>Профиль</button>
-        <button onClick={() => onNavChange('settings')}>Настройки</button>
+        <Link to="/">Главная</Link>
+        <Link to="/profile">Профиль</Link>
+        <Link to="/settings">Настройки</Link>
+        <Link to="/logout">Выход</Link>
       </nav>
     </header>
   )

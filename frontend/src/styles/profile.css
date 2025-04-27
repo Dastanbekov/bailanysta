@@ -1,0 +1,71 @@
+.profile-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.profile-header {
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-header h2 {
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.profile-header .username {
+  color: #777;
+  font-size: 18px;
+}
+
+.profile-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.profile-section {
+  margin-bottom: 30px;
+}
+
+.profile-section h3 {
+  margin-bottom: 15px;
+  color: #4a90e2;
+  font-size: 18px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.profile-info p {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.profile-bio {
+  line-height: 1.6;
+}
+
+.short-bio {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.bio {
+  color: #555;
+  white-space: pre-line;
+}
+
+.no-info {
+  color: #888;
+  font-style: italic;
+}
+
+.edit-profile-btn {
+  max-width: 250px;
+  margin-top: 20px;
+} 

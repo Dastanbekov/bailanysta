@@ -5,7 +5,7 @@ from .models import Profile, Post
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username','password']
+        fields = ['id', 'username','password','first_name','last_name']
         extra_kwargs = {'password':{'write_only':True}}
     
     def create(self, validated_data):
@@ -15,12 +15,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    followers = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    following = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    # followers = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    # following = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Profile
-        fields = ['id', 'user', 'bio', 'short_bio', 'followers', 'following']
+        fields = ['id', 'user', 'bio', 'short_bio']
 
 class PostSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)

@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from .models import Profile, Post, Comment
-from .serializers import PostSerializer, UserSerializer
+from .serializers import PostSerializer, UserSerializer,ProfileSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 
@@ -13,6 +13,13 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
+class ProfileView(generics.RetrieveAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.profile
+    
 class PostListCreate(generics.ListCreateAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
