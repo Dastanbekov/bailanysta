@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Footer from './components/Footer'
 import Sidebar from './components/Sidebar'
-import Header from './components/header'
+import Header from './components/Header'
 import Home from './pages/Home'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
@@ -12,6 +12,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import PublicRoute from './components/PublicRoute'
 import NotFound from './pages/NotFound'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import { ThemeProvider } from './context/ThemeContext'
 
 function Logout() {
   const { logout } = useAuth();
@@ -42,34 +43,36 @@ function ProtectedLayout() {
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Защищённая зона */}
-          <Route 
-            path="/*"
-            element={
-              <ProtectedRoute>
-                <ProtectedLayout />
-              </ProtectedRoute>
-            }
-          />
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Защищённая зона */}
+            <Route 
+              path="/*"
+              element={
+                <ProtectedRoute>
+                  <ProtectedLayout />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Открытые страницы - перенаправляют авторизованных пользователей на главную */}
-          <Route path="/login" element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          } />
-          <Route path="/register" element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          } />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+            {/* Открытые страницы - перенаправляют авторизованных пользователей на главную */}
+            <Route path="/login" element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            } />
+            <Route path="/register" element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            } />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import Post from '../components/Post'
+import AIContentGenerator from '../components/AIContentGenerator'
+import SkeletonLoader from '../components/SkeletonLoader'
 import api from '../api'
 import { useAuth } from '../context/AuthContext'
 
@@ -60,14 +62,27 @@ function Home() {
     }
   }
 
+  const handleAIContentGenerated = (content) => {
+    setNewPostContent(content);
+  }
+
   if (loading) {
-    return <div className="loading-container">Загрузка постов</div>
+    return (
+      <div className="home-page">
+        <div className="create-post-container">
+          <h2 className="section-heading">Создать пост</h2>
+          <div className="skeleton-line" style={{ height: '100px', marginBottom: '1rem' }}></div>
+          <div className="skeleton-line-medium" style={{ height: '40px' }}></div>
+        </div>
+        <SkeletonLoader type="post" count={3} />
+      </div>
+    );
   }
 
   return (
     <div className="home-page">
       <div className="create-post-container">
-        <h2>Создать пост</h2>
+        <h2 className="section-heading">Создать пост</h2>
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleCreatePost}>
           <textarea
@@ -79,16 +94,28 @@ function Home() {
           />
           <button 
             type="submit" 
-            className="auth-button"
+            className="submit-post-btn"
             disabled={submitting || !newPostContent.trim()}
           >
-            {submitting ? 'Отправка...' : 'Опубликовать'}
+            {submitting ? (
+              <>
+                <i className="fas fa-spinner fa-spin"></i>
+                <span>Отправка...</span>
+              </>
+            ) : (
+              <>
+                <i className="fas fa-paper-plane"></i>
+                <span>Опубликовать</span>
+              </>
+            )}
           </button>
         </form>
       </div>
 
+      <AIContentGenerator onContentGenerated={handleAIContentGenerated} />
+      
       <div className="posts-container">
-        <h2>Публикации</h2>
+        <h2 className="section-heading">Публикации</h2>
         {posts.length === 0 ? (
           <p className="no-posts">Пока нет публикаций. Создайте новый пост выше!</p>
         ) : (

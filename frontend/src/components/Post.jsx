@@ -37,55 +37,71 @@ function Post({ post, onDelete, currentUser }) {
     <div className="post">
       <div className="post-header">
         <div className="post-author">
-          <strong>{user.username}</strong>
+          <div className="post-author-avatar">
+            {/* Avatar placeholder will be styled via CSS */}
+          </div>
+          <div className="post-author-info">
+            <strong>{user.username}</strong>
+            <div className="post-date">
+              {created_at && formatDate(created_at)}
+            </div>
+          </div>
         </div>
-        <div className="post-date">
-          {created_at && formatDate(created_at)}
-        </div>
+        
+        {currentUser && currentUser.userId === user.id && (
+          <div className="post-menu">
+            <button className="post-menu-btn">
+              <i className="fas fa-ellipsis-h"></i>
+            </button>
+          </div>
+        )}
       </div>
       
       <div className="post-content">
         {content}
       </div>
       
-      <div className="post-footer">
-        <div className="post-stats">
-          <span className="post-likes">
-            {likes && likes.length} лайков
-          </span>
-        </div>
+      <div className="post-actions">
+        <button className="post-action-btn">
+          <i className="far fa-heart"></i>
+          <span>{likes && likes.length} Нравится</span>
+        </button>
         
-        {currentUser && currentUser.userId === user.id && (
-          <div className="post-actions">
-            {!confirmDelete ? (
-              <button 
-                className="delete-btn"
-                onClick={handleDelete}
-                disabled={loading}
-              >
-                Удалить
-              </button>
-            ) : (
-              <div className="confirm-delete">
-                <span>Уверены?</span>
-                <button 
-                  className="confirm-yes"
-                  onClick={handleDelete}
-                  disabled={loading}
-                >
-                  Да
-                </button>
-                <button 
-                  className="confirm-no"
-                  onClick={cancelDelete}
-                  disabled={loading}
-                >
-                  Нет
-                </button>
-              </div>
-            )}
+        <button className="post-action-btn">
+          <i className="far fa-comment"></i>
+          <span>Комментировать</span>
+        </button>
+        
+        {currentUser && currentUser.userId === user.id && !confirmDelete ? (
+          <button 
+            className="post-action-btn text-danger"
+            onClick={handleDelete}
+            disabled={loading}
+          >
+            <i className="far fa-trash-alt"></i>
+            <span>Удалить</span>
+          </button>
+        ) : confirmDelete ? (
+          <div className="confirm-delete">
+            <span>Уверены?</span>
+            <button 
+              className="confirm-yes"
+              onClick={handleDelete}
+              disabled={loading}
+            >
+              <i className="fas fa-check"></i>
+              <span>Да</span>
+            </button>
+            <button 
+              className="confirm-no"
+              onClick={cancelDelete}
+              disabled={loading}
+            >
+              <i className="fas fa-times"></i>
+              <span>Нет</span>
+            </button>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   )

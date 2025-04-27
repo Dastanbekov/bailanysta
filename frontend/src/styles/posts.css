@@ -1,111 +1,173 @@
 .home-page {
-  padding: 20px;
+  padding: 1rem;
   max-width: 800px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .create-post-container {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 30px;
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
 }
 
 .create-post-container h2 {
-  margin-bottom: 15px;
-  color: #333;
-  font-size: 20px;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .post-textarea {
   width: 100%;
   min-height: 100px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 12px;
-  font-size: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 0.8rem;
+  font-size: 0.95rem;
   resize: vertical;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
   font-family: inherit;
+  transition: border-color 0.2s;
 }
 
 .post-textarea:focus {
   outline: none;
-  border-color: #4a90e2;
+  border-color: var(--primary-color);
+}
+
+.submit-post-btn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.submit-post-btn:hover {
+  background-color: #0d5cb6;
+}
+
+.submit-post-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .posts-container {
-  margin-top: 30px;
+  margin-top: 1.5rem;
 }
 
 .posts-container h2 {
-  margin-bottom: 15px;
-  color: #333;
-  font-size: 20px;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .no-posts {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
   text-align: center;
-  color: #777;
+  color: var(--text-secondary);
   font-style: italic;
 }
 
 .post {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .post-header {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.post-author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.post-author-avatar::after {
+  content: "\f007";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 1.5rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #e4e6eb;
+  color: var(--primary-color);
 }
 
 .post-author strong {
-  color: #333;
-  font-size: 16px;
+  color: var(--text-primary);
+  font-size: 1rem;
 }
 
 .post-date {
-  color: #777;
-  font-size: 14px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
 .post-content {
-  margin-bottom: 15px;
+  margin: 1rem 0;
   line-height: 1.5;
   white-space: pre-line;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .post-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 15px;
-  padding-top: 10px;
-  border-top: 1px solid #eee;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
 }
 
 .post-likes {
-  color: #777;
-  font-size: 14px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
-.post-actions {
+.post-actions-container {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.post-stats {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.post-stats-left {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.post-stats-right {
+  cursor: pointer;
+}
+
+.post-stats-right:hover {
+  text-decoration: underline;
 }
 
 .delete-btn, .confirm-yes, .confirm-no {
@@ -126,14 +188,19 @@
 }
 
 .confirm-delete {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  box-shadow: var(--shadow);
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .confirm-delete span {
-  color: #e74c3c;
-  font-size: 14px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
 }
 
 .confirm-yes {
@@ -142,8 +209,8 @@
 }
 
 .confirm-no {
-  background-color: #eee;
-  color: #333;
+  background-color: var(--hover-bg);
+  color: var(--text-primary);
 }
 
 .confirm-yes:hover {
@@ -152,4 +219,14 @@
 
 .confirm-no:hover {
   background-color: #ddd;
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    padding: 0.8rem;
+  }
+  
+  .create-post-container {
+    padding: 1rem;
+  }
 } 
