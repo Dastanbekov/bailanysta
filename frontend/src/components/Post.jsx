@@ -1,10 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import api from '../api'
+import Comment from './Comment'
 
-function Post({ post, onDelete, currentUser }) {
+function Post({ post, onDelete, onUpdate, currentUser }) {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [postData, setPostData] = useState(post)
+  const [showComments, setShowComments] = useState(false)
+  const [comments, setComments] = useState([])
+  const [commentsLoading, setCommentsLoading] = useState(false)
+  const [newComment, setNewComment] = useState('')
+  const [commentSubmitting, setCommentSubmitting] = useState(false)
   
-  const { id, user, content, created_at, likes } = post
+  const { id, user, content, created_at, likes } = postData
+  
+  // Update component when post prop changes
+  useEffect(() => {
+    setPostData(post);
+  }, [post]);
   
   const formatDate = (dateString) => {
     const date = new Date(dateString)
@@ -32,6 +45,58 @@ function Post({ post, onDelete, currentUser }) {
   const cancelDelete = () => {
     setConfirmDelete(false)
   }
+  
+  const fetchComments = async () => {
+    try {
+      setCommentsLoading(true);
+      const response = await api.get(`/api/posts/${id}/comments/`);
+      setComments(response.data);
+      setCommentsLoading(false);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+      setCommentsLoading(false);
+    }
+  };
+  
+  const handleToggleComments = async () => {
+    const newState = !showComments;
+    setShowComments(newState);
+    
+    if (newState && comments.length === 0) {
+      await fetchComments();
+    }
+  };
+  
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    
+    if (!newComment.trim() || !currentUser || commentSubmitting) return;
+    
+    try {
+      setCommentSubmitting(true);
+      const response = await api.post(`/api/posts/${id}/comments/`, {
+        content: newComment
+      });
+      
+      // Add the new comment to the comments array
+      setComments([...comments, response.data]);
+      setNewComment('');
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    } finally {
+      setCommentSubmitting(false);
+    }
+  };
+  
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await api.delete(`/api/comments/${commentId}`);
+      // Remove the deleted comment from the comments array
+      setComments(comments.filter(comment => comment.id !== commentId));
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+    }
+  };
 
   return (
     <div className="post">
@@ -62,14 +127,20 @@ function Post({ post, onDelete, currentUser }) {
       </div>
       
       <div className="post-actions">
-        <button className="post-action-btn">
+        <button 
+          className="post-action-btn"
+          disabled={!currentUser}
+        >
           <i className="far fa-heart"></i>
-          <span>{likes && likes.length} Нравится</span>
+          <span>{likes ? likes.length : 0} Нравится</span>
         </button>
         
-        <button className="post-action-btn">
+        <button 
+          className="post-action-btn"
+          onClick={handleToggleComments}
+        >
           <i className="far fa-comment"></i>
-          <span>Комментировать</span>
+          <span>Комментарии {comments.length > 0 && `(${comments.length})`}</span>
         </button>
         
         {currentUser && currentUser.userId === user.id && !confirmDelete ? (
@@ -103,6 +174,58 @@ function Post({ post, onDelete, currentUser }) {
           </div>
         ) : null}
       </div>
+      
+      {showComments && (
+        <div className="post-comments">
+          <h4 className="comments-heading">Комментарии</h4>
+          
+          {currentUser && (
+            <form onSubmit={handleAddComment} className="comment-form">
+              <textarea
+                className="comment-textarea"
+                placeholder="Напишите комментарий..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                disabled={commentSubmitting}
+              />
+              <button 
+                type="submit"
+                className="comment-submit-btn"
+                disabled={commentSubmitting || !newComment.trim()}
+              >
+                {commentSubmitting ? (
+                  <i className="fas fa-spinner fa-spin"></i>
+                ) : (
+                  <i className="fas fa-paper-plane"></i>
+                )}
+              </button>
+            </form>
+          )}
+          
+          {commentsLoading ? (
+            <div className="comments-loading">
+              <i className="fas fa-spinner fa-spin"></i>
+              <span>Загрузка комментариев...</span>
+            </div>
+          ) : comments.length === 0 ? (
+            <div className="no-comments">
+              <i className="far fa-comment-alt"></i>
+              <span>Нет комментариев</span>
+            </div>
+          ) : (
+            <div className="comments-list">
+              {comments.map(comment => (
+                <Comment 
+                  key={comment.id} 
+                  comment={comment} 
+                  currentUser={currentUser}
+                  onDelete={handleDeleteComment}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import SkeletonLoader from '../components/SkeletonLoader'
+import Post from '../components/Post'
 import api from '../api'
 
 function Profile() {
   const [profile, setProfile] = useState(null)
+  const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [postsLoading, setPostsLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [postsError, setPostsError] = useState(null)
   const { user } = useAuth()
 
   useEffect(() => {
     fetchProfile()
+    fetchUserPosts()
   }, [])
 
   const fetchProfile = async () => {
@@ -24,6 +29,36 @@ function Profile() {
       setError('Не удалось загрузить данные профиля')
       setLoading(false)
     }
+  }
+
+  const fetchUserPosts = async () => {
+    try {
+      setPostsLoading(true)
+      const response = await api.get('/api/posts/')
+      setPosts(response.data)
+      setPostsLoading(false)
+    } catch (err) {
+      console.error('Error fetching user posts:', err)
+      setPostsError('Не удалось загрузить посты пользователя')
+      setPostsLoading(false)
+    }
+  }
+
+  const handleDeletePost = async (postId) => {
+    try {
+      await api.delete(`/api/post-delete/${postId}`)
+      setPosts(posts.filter(post => post.id !== postId))
+    } catch (err) {
+      console.error('Error deleting post:', err)
+      setPostsError('Не удалось удалить пост')
+    }
+  }
+
+  const handleUpdatePost = (updatedPost) => {
+    // Update the post in the posts array
+    setPosts(posts.map(post => 
+      post.id === updatedPost.id ? updatedPost : post
+    ));
   }
 
   if (loading) {
@@ -61,7 +96,7 @@ function Profile() {
         
         <div className="profile-stats">
           <div className="profile-stat">
-            <span className="stat-count">0</span>
+            <span className="stat-count">{posts.length}</span>
             <span className="stat-label">Постов</span>
           </div>
           <div className="profile-stat">
@@ -125,6 +160,40 @@ function Profile() {
           </div>
         </div>
       )}
+
+      {/* User Posts Section */}
+      <div className="profile-posts-section">
+        <h3 className="section-heading">
+          <i className="fas fa-th"></i> Публикации пользователя
+        </h3>
+        
+        {postsError && (
+          <div className="error-message">
+            <i className="fas fa-exclamation-circle"></i> {postsError}
+          </div>
+        )}
+        
+        {postsLoading ? (
+          <SkeletonLoader type="post" count={2} />
+        ) : posts.length === 0 ? (
+          <div className="no-posts">
+            <i className="fas fa-inbox"></i>
+            <p>У пользователя пока нет публикаций</p>
+          </div>
+        ) : (
+          <div className="profile-posts">
+            {posts.map(post => (
+              <Post 
+                key={post.id} 
+                post={post} 
+                onDelete={handleDeletePost}
+                onUpdate={handleUpdatePost}
+                currentUser={user}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

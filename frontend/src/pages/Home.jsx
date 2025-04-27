@@ -62,6 +62,13 @@ function Home() {
     }
   }
 
+  const handleUpdatePost = (updatedPost) => {
+    // Update the post in the posts array
+    setPosts(posts.map(post => 
+      post.id === updatedPost.id ? updatedPost : post
+    ));
+  }
+
   const handleAIContentGenerated = (content) => {
     setNewPostContent(content);
   }
@@ -123,7 +130,8 @@ function Home() {
             <Post 
               key={post.id} 
               post={post} 
-              onDelete={handleDeletePost} 
+              onDelete={handleDeletePost}
+              onUpdate={handleUpdatePost}
               currentUser={user}
             />
           ))

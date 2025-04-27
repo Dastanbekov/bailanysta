@@ -36,7 +36,9 @@ function ProtectedLayout() {
           </Routes>
         </main>
       </div>
-      <Footer />
+      <div className="footer-wrapper">
+        <Footer />
+      </div>
     </div>
   );
 }

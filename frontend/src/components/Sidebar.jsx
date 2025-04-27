@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 function Sidebar() {
-  const { user } = useAuth() || { user: null };
+  const { user } = useAuth() || {};
+  
+  useEffect(() => {
+    console.log("User data in Sidebar:", user);
+  }, [user]);
 
   return (
     <aside className="sidebar">
@@ -13,7 +17,8 @@ function Sidebar() {
             {/* Use default avatar placeholder */}
             <div className="avatar-placeholder"></div>
           </div>
-          <h3 className="user-name">{user.displayName || 'Пользователь'}</h3>
+          <h3 className="user-name">{user.username || 'Пользователь'}</h3>
+          <p className="user-id">ID: {user.userId}</p>
         </div>
       )}
       
