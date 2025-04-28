@@ -41,7 +41,6 @@ function Home() {
         content: newPostContent
       })
       
-      // Add the new post to the beginning of the posts array
       setPosts([response.data, ...posts])
       setNewPostContent('')
       setSubmitting(false)
@@ -63,7 +62,6 @@ function Home() {
   }
 
   const handleUpdatePost = (updatedPost) => {
-    // Update the post in the posts array
     setPosts(posts.map(post => 
       post.id === updatedPost.id ? updatedPost : post
     ));
