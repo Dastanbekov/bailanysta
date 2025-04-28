@@ -2,6 +2,7 @@
 
 Bailanysta is a social media platform developed using React for the frontend and Django Rest Framework for the backend API. The application enables users to create accounts, publish posts, view and interact with other users' content.
 
+Vidio example - [later]
 ## Features
 
 - User authentication (registration, login, logout)
@@ -16,23 +17,22 @@ Bailanysta is a social media platform developed using React for the frontend and
 ## Tech Stack
 
 ### Frontend
-- React (with hooks and context API)
-- CSS for styling (custom variables for theming)
+- React
+- CSS
 - Axios for API requests
 - React Router for navigation
 
 ### Backend
 - Django Rest Framework
-- PostgreSQL database
 - JWT Authentication
 - RESTful API architecture
+- Gemini API 
 
 ## Installation and Setup
 
 ### Prerequisites
 - Node.js and npm
 - Python 3.8+
-- PostgreSQL
 
 ### Backend Setup
 1. Clone the repository
@@ -52,16 +52,16 @@ source env/bin/activate  # On Windows: env\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Configure database in settings.py
+4. Create the .env file at the backend root directory and add GEMINI_API_KEY='yourApi'
 
 5. Run migrations
 ```
 python manage.py migrate
 ```
 
-6. Start the server
+6. Start the server locally
 ```
-python manage.py runserver
+python manage.py runserver 0.0.0.0:8000 
 ```
 
 ### Frontend Setup
@@ -82,49 +82,21 @@ npm run dev
 
 ## Design and Development Process
 
-The development process followed an iterative approach:
-
-1. **Planning and Requirements Analysis**: Defined the core features and user flows.
-
-2. **Architecture Design**: Established a clear separation between frontend and backend through a RESTful API.
-
-3. **UI/UX Design**: Created a clean, responsive interface with consistent styling and component patterns.
-
-4. **Development**: 
+1. **Development**: 
    - Backend: Created Django models, serializers, and views for users, posts, and comments
    - Frontend: Built React components for all UI elements, implemented context for global state management
 
-5. **Integration**: Connected frontend and backend through API calls with proper error handling.
-
-6. **Testing and Refinement**: Tested all features and resolved bugs.
-
-## Unique Approaches
-
-- **Theme Implementation**: Used CSS variables for theming, allowing for seamless switching between light and dark modes with persistent user preference.
-- **AI Content Generation**: Integrated an AI service to help users generate post content.
-- **Optimistic UI Updates**: Implemented immediate UI updates before server confirmation for a responsive user experience.
-
-## Tradeoffs
-
-- **Simple Authentication**: Used JWT tokens for authentication instead of more complex OAuth solutions to simplify implementation.
-- **Minimal Dependencies**: Opted to use fewer libraries to maintain control over the codebase but requiring more custom code.
-- **Frontend Rendering**: Chose client-side rendering for better user experience at the cost of initial load performance.
+2. **Integration**: Connected frontend and backend through API calls with proper error handling.
 
 ## Known Issues
 
-- User search functionality is not yet implemented
-- Subscription system for following other users is planned but not implemented
-- Notifications feature is in development
-- Mobile responsiveness could be improved for some components
+- search functionality is not yet implemented
+- Subscription system for following other users is not implemented
+- Notifications feature is not implemented
+- Bug with comments
+- styles bug at the auth page
 
 ## Why This Tech Stack
 
 - **React**: Chosen for its component-based architecture, which enables efficient UI development and state management.
 - **Django Rest Framework**: Selected for its robustness, built-in authentication, and serialization capabilities that streamline API development.
-## Future Improvements
-
-- Implement user search functionality
-- Add subscription system for following other users
-- Develop a notification system for new comments or interactions
-- Enhance mobile responsiveness
-- Add image upload capabilities for posts and user profiles
