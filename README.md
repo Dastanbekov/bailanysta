@@ -2,11 +2,10 @@
 
 Bailanysta is a social media platform developed using React for the frontend and Django Rest Framework for the backend API. The application enables users to create accounts, publish posts, view and interact with other users' content.
 
-Vidio example - [
+Vidio example - 
 
 https://github.com/user-attachments/assets/b674a118-7f3a-4523-bc1f-3fa82dd83ff2
 
-later]
 ## Features
 
 - User authentication (registration, login, logout)
